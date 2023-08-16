@@ -10,7 +10,7 @@ source "$ASDF/asdf.sh"
 source "$ASDF/completions/asdf.bash"
 
 # tools that are guaranteed to be instantiated
-TOOLS=( shellcheck rust python )
+TOOLS=( shellcheck rust python direnv )
 
 sync_tools() {
     local reshim=0
@@ -27,6 +27,8 @@ sync_tools() {
 }
 
 asdf reshim
+
+eval "$(direnv stdlib)"
 
 cargo install cargo-quickinstall cargo-binstall
 cargo binstall -y sccache
