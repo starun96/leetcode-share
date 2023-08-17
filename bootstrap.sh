@@ -1,34 +1,38 @@
 #!/usr/bin/env bash
 
+# get script dir
 DIR="$( dirname -- "${BASH_SOURCE[0]}"; )"
 DIR="$( realpath -e -- "$DIR"; )"
 
+# install asdf to start
 ASDF="$DIR/asdf"
-git submodule update --init --recursive --depth 1
-
+git submodule update --init --recursive --depth 1 "$ASDF"
 source "$ASDF/asdf.sh"
 source "$ASDF/completions/asdf.bash"
 
-# tools that are guaranteed to be instantiated
+# asdf installs the tooling
 TOOLS=( shellcheck rust python direnv )
+reshim=0
+for lang in "${TOOLS[@]}"; do
+    if ! asdf current "$lang" &>/dev/null; then
+        asdf plugin add "$lang" &>/dev/null
+        asdf install "$lang" latest &>/dev/null
+        asdf local "$lang" latest &>/dev/null
+        reshim=1
+    fi
+done
 
-sync_tools() {
-    local reshim=0
-    for lang in "$@"; do
-        if ! asdf current "$lang" &>/dev/null; then
-            asdf plugin add "$lang" &>/dev/null
-            asdf install "$lang" latest &>/dev/null
-            asdf local "$lang" latest &>/dev/null
-            reshim=1
-        fi
-    done
-
-    return "$reshim"
-}
-
-asdf reshim
+# reshim if any deltas need to be picked up
+if [[ "$reshim" -eq 1 ]]; then
+    asdf reshim
+fi
 
 eval "$(direnv stdlib)"
+eval "$(direnv hook bash)"
 
+# basic cargo tools to speed up compiles and the like
 cargo install cargo-quickinstall cargo-binstall
-cargo binstall -y sccache
+cargo binstall -y sccache cargo-prefetch
+cargo-prefetch --top-downloads=384
+
+asdf reshim
