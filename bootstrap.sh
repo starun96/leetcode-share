@@ -23,9 +23,7 @@ for lang in "${TOOLS[@]}"; do
 done
 
 # reshim if any deltas need to be picked up
-if [[ "$reshim" -eq 1 ]]; then
-    asdf reshim
-fi
+asdf reshim
 
 eval "$(direnv stdlib)"
 eval "$(direnv hook bash)"
