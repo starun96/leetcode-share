@@ -1,62 +1,47 @@
 use std::cell::OnceCell;
-use std::ranges::Range;
+use std::ops::Range;
 
-fn do_something() {
-    println!("Something!");
-}
-
-fn container_most_water(heights: Vec<usize>) -> usize {
+pub fn container_most_water(heights: Vec<usize>) -> usize {
     let n = heights.len();
-    let mut solutions: Vec<Vec<OnceCell<usize>>> = vec![vec![OnceCell::new(); n]; n];
+    let solutions: Vec<Vec<OnceCell<usize>>> = vec![vec![OnceCell::new(); n]; n];
 
-    return container_water_recursive(&heights, &solutions, 0, n - 1);
-    // solutions[i, j] = max(solutions[i - 1, j] , solutions[i, j - 1])
-
-    // if solution[i, j] already exists, then return solution[i, j]
-    // else, compute solution[i, j] -> abs(i - j) * min(heights[i], heights[j])
+    return container_water_recursive(heights.as_slice(), &solutions, 0..n);
 }
 
-/// This is a structure that wraps the (i, j)
-struct Container<'a> {
-    extents: &'a [usize],
-}
+fn area(container: &[usize]) -> usize {
+    let width = container.len();
 
-///https://www.reddit.com/r/Fedora/comments/uy1wxr/rust_libssl_issue/
-
-impl<'a> Container<'a> {
-    pub fn area(&self) -> usize {
-        if self.extents.is_empty() {
-            return 0;
-        }
-
-        let left = self.extents.first();
-        let right = self.extents.last();
-
-        let width = self.extents.len();
-        let height = std::cmp::min(left, right);
-        return width * height;
+    if width < 2 {
+        return 0;
     }
+
+    let left = container[0];
+    let right = container[width - 1];
+
+    let height = std::cmp::min(left, right);
+    return width * height;
 }
 
 fn container_water_recursive(
     heights: &[usize],
-    solutions: &mut Vec<Vec<OnceCell<usize>>>,`dasdasdadasddd6
+    solutions: &Vec<Vec<OnceCell<usize>>>,
     window: Range<usize>, // half open interval
 ) -> usize {
-    // separation of pointers by 1 or more
-    let len = window.end - window.start;
-    if !window.is_empty() {
+    let Range { start, end } = window;
+    let entry = &solutions[start][end - 1];
+    let ans = entry.get_or_init(move || {
+        if window.len() <= 2 {
+            return area(&heights[window]);
+        }
 
-        // no window == no area
-    } else {
-        0
-    }
+        let right_subset = (start + 1)..end;
+        let right_subset_solution = container_water_recursive(heights, solutions, right_subset);
 
-    if j == window.start + 1 {
-        let area = std::cmp::min(heights[i], heights[j]);
-        solutions[i][j] = area;
-        return area;
-    }
+        let left_subset = start..(end - 1);
+        let left_subset_solution = container_water_recursive(heights, solutions, left_subset);
 
-    todo!()
+        let best_solution = std::cmp::max(left_subset_solution, right_subset_solution);
+        return best_solution;
+    });
+    *ans
 }
