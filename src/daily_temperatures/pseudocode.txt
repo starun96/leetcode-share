@@ -1,0 +1,46 @@
+[73,74,75,71,69,72,76,73,74]
+[ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+
+Dict[Range<usize>] -> 7
+
+mappings = {73: ([73], 1), 74: ([74], 2), 75: ([75, 71, 69], 5), 72: ([ 72 ], 6), 76: ([76, 73], NULL)}
+answers = []
+
+for pair in mappings:
+    start at pair.termination
+    for i in range (len(pair.substack))
+        answers[termination - i] = termination - i
+
+i = 04
+stack.push(73)
+
+for i interval
+start =x
+end =  x
+
+
+i = 1
+
+mappings[73] = [73]
+
+stack = []
+stack.push(74)
+
+#
+
+i = 2
+mappings[74] = [74]
+
+stack = []
+stack.push(75)
+
+#
+
+i = 3
+mappings[75].push(71)
+
+i = 4
+mappings[75].push(69)
+
+i = 5
+mappings[72]4
