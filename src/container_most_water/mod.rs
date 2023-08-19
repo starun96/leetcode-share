@@ -3,7 +3,7 @@ use std::ops::Range;
 
 pub fn container_most_water(heights: Vec<usize>) -> usize {
     let n = heights.len();
-    let solutions: Vec<Vec<OnceCell<usize>>> = vec![vec![OnceCell::new(); n]; n];
+    let solutions = vec![vec![OnceCell::new(); n]; n];
 
     return container_water_recursive(heights.as_slice(), &solutions, 0..n);
 }
