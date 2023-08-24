@@ -1,0 +1,31 @@
+Link: https://leetcode.com/problems/search-a-2d-matrix/
+
+#### Tarun ####
+
+def get_elem_from_idx(matrix, idx, m):
+    row = idx // m
+    col = idx % m
+
+    return matrix[row][col]
+
+
+def search(matrix):
+    left = 0
+    right = (m * n) - 1
+    
+    while left <= right:
+        midpoint = (left + right ) // 2
+        
+        mid_element = get_elem_from_idx(matrix, midpoint, m)
+
+        if mid_element == target:
+            return true
+
+        elif mid_element < target:
+            left = midpoint + 1
+            
+        elif mid_element > target:
+            right = midpoint - 1
+
+    return false
+
