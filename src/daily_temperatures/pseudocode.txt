@@ -18,16 +18,13 @@ for i interval
 start =x
 end =  x
 
-
 i = 1
-
 mappings[73] = [73]
 
 stack = []
 stack.push(74)
 
 #
-
 i = 2
 mappings[74] = [74]
 
@@ -35,7 +32,6 @@ stack = []
 stack.push(75)
 
 #
-
 i = 3
 mappings[75].push(71)
 
