@@ -1,12 +1,9 @@
-use crate::container_most_water::container_most_water_loop;
-
 mod container_most_water;
+mod search_2d_matrix;
 
 fn main() {
-    let heights = vec![1, 8, 6, 2, 5, 4, 8, 3, 7];
-    //let result = container_most_water::container_most_water();
-    //println!("The result is: {result}");
-
-    let result = container_most_water_loop(heights);
+    let matrix = vec![vec![2, 3, 4], vec![2, 4, 3], vec![4, 2, 3], vec![3, 2, 4]];
+    let target = 8;
+    search_2d_matrix::search_2d_matrix(matrix, target);
     println!("The result is: {result}");
 }
