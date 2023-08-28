@@ -1,0 +1,58 @@
+we have an array of numbers
+
+the max profit is essentially the difference in the highest peak
+versus the lowest trough.
+
+the only valid solutions are the subset of peaks and troughs that
+have indices so that the peak comes AFTER the trough.
+
+Input: prices = [7, 1, 5, 3, 6, 4]
+Output: 5
+
+for documentation purposes, here's the brute force:
+
+    profit = 0
+    for i, price in enumerate(prices):
+        future = prices[ (i + 1) : ]
+        for j, peek in enumerate(future):
+            profit = max(profit, peek - price)
+
+key points of observation are that we pick a successively increasing
+index 'i', and then the 'future' is of size 'len - i'. thus for an index 
+the value of this function f(x) is basically linear in the value of 'i'.
+
+ultimately if you do the arithmetic, the sum of all of the work done is 
+approximately n^2/2 ~ O(n^2)
+
+max() as it stands only really goes up and seems to make the act of checking
+indices repeatedly redundant (i.e. 5 and 3 get visited a number of times while
+we work on the 7 and the 1)
+
+the biggest thing that needs to happen is that you need to find the deepest
+trough that gives you enough 'room' for there to be a large peak after. 
+
+examining 1st order differences:
+    [ -6, 4, -2, 3, -2]
+
+ultimately the key thing to capture is the 4 + 3 - 2 run in order to get
+the correct ans above
+
+start a 2 size window trained on the first 2 elements of the array
+
+for each iteration do as follows:
+    check WHAT the profit is for the window
+    examine right side expansion
+    see if it increases your output 
+
+
+7 1 => -6 vs 7 5 => -2 so it's better. discard 7 and keep window trained on 1 5 
+window is now size 2, examine expansion and spans 1 5 3; thgis is a reduction of profit
+vs 1 5. because 5 is the highest here we have to pass the 3 over to the 6.1st
+
+transcribing
+
+
+for i in len(prices):
+   
+   lowest = min(lowest, prices[i])
+   highest = max(highest, prices[i])

@@ -1,0 +1,9 @@
+prices = [7,1,5,3,6,4]
+
+def max_profit_fcn(lst):
+    max_profit = 0
+    for idx,buy_price in enumerate(lst):
+        for sell_price_idx in range(idx + 1, len(lst)):
+            profit = lst[sell_price_idx] - buy_price
+            max_profit = max(max_profit,profit)
+    return max_profit

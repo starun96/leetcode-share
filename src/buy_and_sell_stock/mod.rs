@@ -10,9 +10,7 @@ pub fn buy_sell_stock(prices: Vec<i32>) -> i32 {
         } else if *price > prices[highest] {
             highest = i;
             let profit = prices[highest] - prices[lowest];
-            if profit > max_profit {
-                max_profit = profit;
-            }
+            max_profit = std::cmp::max(profit, max_profit);
         }
     }
 
