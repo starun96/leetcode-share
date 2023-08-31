@@ -1,0 +1,47 @@
+a -> b -> c -> d
+
+a d (b c)
+
+grab middle of SLL as a fixed point
+
+for each node in SLL:
+    we know where the node is 'relative' to the middle
+    
+    if the node is 'before' the middle, then it is the left part
+    of the pairs formed from the start and end
+
+    else, it's on the 'right' side of the pair.
+
+i.e. 
+
+a is very far from the middle and it's on the left side of the middle,
+so it stays put. 
+
+struct node {
+    node *next
+}
+
+slow = head
+fast = head
+
+// first check technically redundant
+while (slow->next != null && fast->next != null) {
+    slow = slow->next?
+    fast = fast->next?
+    fast = fast->next?
+}
+
+mid = slow
+end = fast
+
+list a = Range { head, mid }
+list b =  Range { mid, end }
+
+b.reverse() # use 3 pointers 
+
+while (!a.empty() && !b.empty()) {
+    a.pop_head
+    b.pop_head
+    out.add(a)
+    out.add(b)
+}

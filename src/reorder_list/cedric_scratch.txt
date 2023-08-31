@@ -1,0 +1,14 @@
+class car: 
+    def door(self, color): 
+        self.color = color
+        
+
+
+car1 = car()
+
+car1.door("brown")
+
+car1.color == "brown"
+
+self is an INSTANCE
+self is a BLOB of memory

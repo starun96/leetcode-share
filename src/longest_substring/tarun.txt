@@ -1,0 +1,81 @@
+def length_of_longest_substring(s: str) -> int:
+    i: int
+    j: int
+    i, j = 0, 0
+    
+    index: int
+    
+    current_max = 0
+
+    # let's treat this problem as an instance of
+    # one with 'dummy' elements on the sides, at '-1' and 'n'
+    # dummy elements mean we're starting or ending the algo
+    # I think the ending one is not necessary
+    # anyways
+    
+    # go through each index, and compare current against previous
+    # obviously, previous value doesn't really make sense for
+    # dummy elements, so we can treat them as equal to the respective
+    # side (i.e. padding the array)
+
+    # if the current character is different than the last seen one, that
+    # entitles us to grow our window rightwards. 
+    # as long as that holds true, we can continually grow that right side 'j'
+    # whenever it is then violated, we have a repeating character subsequence
+    # and we have to reset the window to where that sequence notionally
+    # 'starts'
+
+    # every 'violation' event is essentially a trigger to update our maximum
+    # length as well as the known span of the biggest substring that is
+    # nonrepeating
+
+    prev_c = s[0]
+
+    q  | q
+    -1 | 0
+
+    for index, c in enumerate(s): 
+
+        # if the previous character matches,
+        # then this is a 'violation'
+        # therefore, we reset our i, j
+        # over to where the next character after
+        # the 'breakage' happens
+
+        # if we then do i,j=index, index+1, then
+        # this is a half-open interval that spans a length of 1
+        # element starting at index 0
+
+        # by setting the initial condition above
+        # you can observe that the first loop iteration
+        # automatically triggers the 'reset'
+        # the reset entails resetting our pointers to
+        # start at our current position.
+        # that means that the length of the current window
+        # has been reset back to 1.
+        # only if it gets beyond the new max will anything change
+        
+        if prev_c == c:
+            best = max (best, w)
+            i = index
+            w = i + 1
+        else:
+            w += 1
+      
+        # 
+        prev_c = c
+        
+
+        p w  | w k e | w
+
+
+        # just to chime in seems like you just need to keep track of 
+        # any characters you've seen, i.e. vector<bool> tbh.
+        # you could use a bit array to represent it where each ascii value
+        # of the letter as an int is the position in the bit array.a
+        # if the bit for the letter is a 1 then it means we've already encountered it
+        # therefore, we are not going to be able to include it in our sliding window
+        # more generally the prev_c==c is in a sense doing one version of that,
+        # it's just only checking for something rudimentary rather than a position
+        # independent repeat thingy
+        [ ]

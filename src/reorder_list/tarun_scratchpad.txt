@@ -1,0 +1,58 @@
+----------------------V
+    ---------->
+L1  L2  L3 <- L4  L5
+    s        e  es         
+    <----------------
+
+pubfn reorder_list(head: &mut)
+
+
+car.py
+--car class
+--car function
+--cars
+
+import car
+
+car.fuck_horse()
+
+/
+/python
+//car
+///engine
+///wheel
+//horse
+//horse_utils.py
+
+from car.engine import start
+
+start(lsdkfjlkdsfj)
+//plane
+
+from car.engine import start
+-> car
+-->engine.py
+---> def start():
+    #does some shit
+
+-->wheel.py
+
+--> 
+
+
+/
+
+
+class LinkedListNode: 
+    inner_data: int | None
+    next: LinkedListNode
+
+    def get_data(self) -> int | None:
+        if self.inner_data:
+            return self.inner_data
+        else:
+            #raise ValueError("Go fuck yourself")
+            return None
+
+    def get_next(self) -> LinkedListNode | None:
+        
