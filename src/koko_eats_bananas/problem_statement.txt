@@ -1,0 +1,57 @@
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23
+
+
+
+Scratchpad 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+
+total(piles) = 27
+h_max = 8
+h_min = 4
+ceil(total(piles) / h_max) = 4
+
+k lower bound = ceil(total(piles) / h_max) = 4
+k higher bound = max(piles) = 11
+
+k: Range<usize>
+
+pick a k
+
+for k = 11
+total time = 4
+
+for k = 7
+1 + 1 + 1 + 2 = 5
+
+for k = 6
+1 + 1 + 2 + 2 = 6
+
+
+4 - 7
+
+4-5 =>
+
+k_search = max(arr)
+do {
+    k = (k_min + k_search) // 2
+} while (total(arr, k) <= h_max)
