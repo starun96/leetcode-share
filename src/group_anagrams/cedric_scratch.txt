@@ -1,0 +1,21 @@
+strs = ["eat","tea","tan","ate","nat","bat"]
+
+
+for
+
+
+    
+    
+
+
+[
+    [a] = 1
+    [b] = 2
+]
+
+etc.
+
+key thing is that if there are 2 matching 1s in any compare between 2 strings they XOR and obliterate to 0.
+any summation that is even will result in that, but you really want the counts to match.
+
+

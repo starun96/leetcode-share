@@ -1,0 +1,9 @@
+def groupAnagrams(self, strs):
+    anagram_map = dict()
+    for val in strs:
+        sorted_str = ''.join(sorted(val))
+        if sorted_str not in anagram_map:
+            anagram_map[sorted_str] = []
+        anagram_map[sorted_str].append(val)
+
+    return list(anagram_map.values())
