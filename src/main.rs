@@ -1,8 +1,9 @@
-mod koko_eats_bananas;
+mod top_k_frequent_elements;
 
 fn main() {
-    let piles = vec![2, 3, 4, 5];
-    let h = 8;
-    let result = koko_eats_bananas::solution::min_eating_speed(piles, h);
+    let nums = vec![1, 4, 3, 4, 4, 5, 2, 0, 5, 8, 2];
+    let k = 3;
+    let result = top_k_frequent_elements::top_k_frequent(nums, k);
+
     dbg!(result);
 }
