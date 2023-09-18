@@ -3,9 +3,9 @@ use std::{cell::RefCell, collections::HashMap, ops::Deref, rc::Rc};
 type NodeRef = Rc<RefCell<Node>>;
 
 struct Node {
-    key: i32,
-    val: i32,
-    next: Option<NodeRef>,
+    pub key: i32,
+    pub val: i32,
+    pub next: Option<NodeRef>,
 }
 
 pub struct LRUCache {
@@ -93,5 +93,21 @@ impl LRUCache {
         tail.deref().borrow_mut().next = Some(Rc::clone(&node_ref));
         self.node_map.insert(key, tail);
         self.tail = node_ref;
+    }
+}
+
+struct LRUCacheIter {
+    cur_node: NodeRef,
+}
+
+impl Iterator for LRUCacheIter {
+    type Item = (i32, i32);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let current_node_borrow = self.cur_node.borrow();
+        let next_node = &current_node_borrow.next?;
+        let next_node_borrow = next_node.borrow();
+        //drop(current_node_borrow);
+        Some((next_node_borrow.key, next_node_borrow.val))
     }
 }
