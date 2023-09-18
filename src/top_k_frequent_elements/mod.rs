@@ -21,27 +21,26 @@ impl PartialOrd for HeapNode {
 
 pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
     let k = k as usize;
-    let mut count_map: HashMap<i32, u32> = HashMap::new();
+
+    let mut count_map: HashMap<i32, i32> = HashMap::new();
+
     for num in nums {
-        *count_map.entry(num).or_default() += 1;
+        *count_map.entry(num).or_default() -= 1;
     }
 
-    let mut bin_heap = BinaryHeap::new(); // max heap
-
-    for (elem, count) in count_map.iter().take(k) {
-        bin_heap.push(HeapNode {
-            elem: elem.clone(),
-            count: count.clone(),
-        });
-    }
+    let mut bin_heap: BinaryHeap<_> = count_map
+        .iter()
+        .take(k)
+        .map(|(&elem, &count)| (count, elem))
+        .collect();
 
     for (elem, count) in count_map.into_iter().skip(k) {
-        let min_elem = bin_heap.peek().unwrap();
-        if count > min_elem.count {
+        let (heap_count, heap_elem) = *bin_heap.peek().unwrap();
+        if count < heap_count {
             bin_heap.pop();
-            bin_heap.push(HeapNode { elem, count });
+            bin_heap.push((count, elem));
         }
     }
 
-    bin_heap.into_iter().map(|node| node.elem).collect()
+    bin_heap.into_iter().map(|node| node.1).collect()
 }
