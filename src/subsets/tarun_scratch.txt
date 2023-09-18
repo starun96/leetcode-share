@@ -1,0 +1,64 @@
+[1, 2, 3, 4, 5, 6]
+
+1) append [1, 2, 3, 4, 5, 6]
+2) exclude 1, append [2, 3, 4, 5, 6]
+    a) recursively get unique subsets for [2, 3, 4, 5, 6]
+3) exclude 2, append [1, 3, 4, 5, 6]
+    a) recursively get unique subsets for [1, 3, 4, 5, 6]
+4) exclude 3...
+5. continue until the subset is only 1 element long
+
+[1, 2, 3, 4, 5, 6]
+[1, 1, 1, 1, 1, 1] 
+
+we've got 6 bits
+bit i -> element i goes in the output subset
+you tie a bit vector of the same number of bits to 
+the size of the original data input array
+
+the unique powersets are all possible subsets
+which is basically every binary digit combo possible 
+in the 'effectively' number that is created.
+
+simply put, you can iterate through all the bit combos
+i.e. count from 0 -> 2^bits - 1, inclusive
+
+let's call the 'count' above the 'mask' identifying whether
+or not the data is in the output
+
+so we'll call it outputMask
+
+outputMask has the property that bit i means that
+data[i] is in the resulting output subset
+
+therefore, for a given binary combination set
+i.e. a number like 37
+
+you can walk through the bits
+each 1 indicates candidcaty in the output subset
+otherwise you just ignore it
+
+obviously you're doing redundant work by wlaking through potentially
+overlapping subsets of bits in the bit vector
+
+so you can simply recall that because bit i means that the output subset
+has i, then a given outputMask encodes a unique subset in the powerset.a
+
+therefore you can literally precompute everything in advance
+
+ 1    1   1   1   1   1
+32 + 16 + 8 + 4 + 2 + 1 = 63
+
+63 is 2^bits -1 
+
+0 to 2^12 - 1
+
+length of a binary string of 1s has the max value equal to
+
+for i in range(0, 64):
+    val = i
+    subslice = []
+
+    foreach index, bit in val:
+        if bit.isSet():
+            subslice.add(originalData[index])
