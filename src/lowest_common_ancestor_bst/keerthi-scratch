@@ -1,0 +1,38 @@
+start at the root R 
+
+consider the value of P and Q vs the root R
+
+if P < R < Q:
+    P and Q are flanking R on both sides, and the answer is R.
+
+otherwise:
+    P and Q are both on one side of R, in which case the deepest ancestor 
+    would be the highest of the two nodes P and Q in the tree. 
+
+    This means that either P or Q is a child of the other.
+
+    As long is this is the case, we can isolate our search to the side 
+    that 'seems' to have both of the nodes.
+
+    This means that: 
+        if one of {P, Q} matches one of {R->children}, then that means
+        that the child node that DOES match is the answer.
+
+        if neither matches, then that means we can switch our root deeper
+        to the side that the child nodes lay on
+
+do
+    if (p < root < q) {
+        return root;
+    }
+
+    found_p = root == p;
+    found_q = root == q;
+    found_both = 
+
+    if (found_p == found_q) {
+        return root;
+    }
+
+    if ()
+while (

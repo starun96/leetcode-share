@@ -94,9 +94,15 @@ impl LRUCache {
         self.node_map.insert(key, tail);
         self.tail = node_ref;
     }
+
+    pub fn iter(&self) -> LRUCacheIter {
+        LRUCacheIter {
+            cur_node: Rc::clone(&self.head),
+        }
+    }
 }
 
-struct LRUCacheIter {
+pub struct LRUCacheIter {
     cur_node: NodeRef,
 }
 
@@ -104,10 +110,10 @@ impl Iterator for LRUCacheIter {
     type Item = (i32, i32);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let current_node_borrow = self.cur_node.borrow();
-        let next_node = &current_node_borrow.next?;
-        let next_node_borrow = next_node.borrow();
-        //drop(current_node_borrow);
-        Some((next_node_borrow.key, next_node_borrow.val))
+        let next_node = Rc::clone(self.cur_node.borrow().next.as_ref()?);
+        self.cur_node = next_node;
+        let node_borrow = self.cur_node.borrow();
+
+        Some((node_borrow.key, node_borrow.val))
     }
 }

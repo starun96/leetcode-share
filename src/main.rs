@@ -1,5 +1,3 @@
-mod lru_cache;
+mod lowest_common_ancestor_bst;
 
-fn main() {
-    let lru_cache = lru_cache::LRUCache::new(2);
-}
+fn main() {}

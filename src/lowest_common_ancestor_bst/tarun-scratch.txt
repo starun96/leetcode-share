@@ -1,0 +1,16 @@
+def(input_root, p, q):
+
+    root = input_root
+    while:
+
+    
+        if p < root and q < root:
+            root = root.left
+
+        elif p > root and q > root:
+            root = root.right
+
+        else:
+            return root
+        
+    raise Exception("Should've found root by now")
