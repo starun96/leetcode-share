@@ -30,26 +30,26 @@ pub fn lowest_common_ancestor(
     p: Option<Rc<RefCell<TreeNode>>>,
     q: Option<Rc<RefCell<TreeNode>>>,
 ) -> Option<Rc<RefCell<TreeNode>>> {
-    let mut cur_root: Rc<RefCell<TreeNode>> = root.unwrap();
-
-    let p: Rc<RefCell<TreeNode>> = p.unwrap();
-    let q: Rc<RefCell<TreeNode>> = q.unwrap();
-
-    let p_val = p.borrow().val;
-    let q_val = q.borrow().val;
+    let p_val = p.unwrap().borrow().val;
+    let q_val = q.unwrap().borrow().val;
+    let mut cur_root = root.unwrap();
 
     loop {
-        let underlying = cur_root.borrow();
-        let mut cur_root_val = underlying.val;
+        let cur_node = cur_root.borrow();
+        let cur_root_val = cur_node.val;
 
         // go left if both less than current spot
         if p_val < cur_root_val && q_val < cur_root_val {
-            cur_root = Rc::clone(underlying.left.as_ref().unwrap());
-
+            let new_root = Rc::clone(cur_node.left.as_ref().unwrap());
+            drop(cur_node);
+            cur_root = new_root;
         // go right if both higher than current spot
         } else if p_val > cur_root_val && q_val > cur_root_val {
-            cur_root = Rc::clone(underlying.right.as_ref().unwrap());
+            let new_root = Rc::clone(cur_node.right.as_ref().unwrap());
+            drop(cur_node);
+            cur_root = new_root;
         } else {
+            drop(cur_node);
             return Some(cur_root);
         }
     }
