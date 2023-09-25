@@ -1,3 +1,3 @@
-mod lowest_common_ancestor_bst;
+mod number_of_islands;
 
 fn main() {}
