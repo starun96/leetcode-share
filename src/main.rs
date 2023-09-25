@@ -1,3 +1,2 @@
-mod number_of_islands;
-
+mod implement_trie;
 fn main() {}
