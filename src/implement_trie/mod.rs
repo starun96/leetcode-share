@@ -3,7 +3,7 @@ use std::{cell::RefCell, rc::Rc, str::Chars};
 type TrieNodeRef = Rc<RefCell<TrieNode>>;
 
 struct TrieNode {
-    val: char,
+    pub val: char,
     children: Vec<TrieNodeRef>,
 }
 
@@ -22,9 +22,21 @@ impl Trie {
     }
 
     fn insert(&self, word: String) {
-        /* for symbol in word.chars() {
+        let traverser = self.traverse(word).enumerate();
+        let (last_idx, last_node) = traverser.last().unwrap();
 
-        } */
+        let mut current_node = Some(last_node);
+        let mut cur_idx = last_idx;
+
+        while let Some(current_node_ref) = current_node {
+            let cur_char = &word.chars().nth(cur_idx).unwrap();
+            let new_node = Rc::new(RefCell::new(TrieNode {
+                val: *cur_char,
+                children: vec![],
+            }));
+            let current_node_ref_borrow = current_node_ref.borrow();
+            current_node_ref_borrow.children.push(new_node);
+        }
     }
 
     fn search(&self, word: String) -> bool {
@@ -35,13 +47,12 @@ impl Trie {
         todo!()
     }
 
-    fn traverse(&self, word: String) -> impl Iterator {
+    fn traverse(&self, word: String) -> TrieIter {
         TrieIter {
             cur_node: Rc::clone(&self.root),
             word: word.chars().collect(),
             idx: 0,
         }
-        .into_iter()
     }
 }
 
@@ -55,8 +66,17 @@ impl Iterator for TrieIter {
     type Item = TrieNodeRef;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let cur_symbol = &self.word[self.idx];
-        let x = self.cur_node.borrow().children.iter().find(|ch| todo!());
-        todo!()
+        let cur_symbol = self.word.get(self.idx)?;
+        let borrowed_node = self.cur_node.borrow();
+        let next_child = borrowed_node
+            .children
+            .iter()
+            .find(|child| child.borrow().val == *cur_symbol)?;
+        let new_node = Rc::clone(next_child);
+        drop(borrowed_node);
+        self.cur_node = new_node;
+        self.idx += 1;
+
+        Some(Rc::clone(&self.cur_node))
     }
 }
