@@ -1,0 +1,53 @@
+using State = {
+    Position, Speed
+}
+
+Input = State[], key = car number
+
+for two-pair in Input 
+    left = two-pair.left
+    right = two-pair.right 
+
+    is left closer or right closer to target?:
+        back / front = <further>
+        front / back = <closer>
+
+    can back catch up to front? if so,:
+        <set back speed to front when it catches up>
+
+
+    // caveat is the array isn't actually going to give us the cars
+    // ordered along the row, so presumption is that we use the stack to
+    // maintain a grouping structure. 
+
+    // we got 10 and 8 and we know where they fall and that they form a group, so we have
+    // groups = [ [10 8] ]
+    
+    stack = < [10; 8], 2, 0; 1 >
+
+    // when we get the 0 in place we see that the 0 has no way of catching up to car 8 and belongs in a separate group.
+    // so we have groups = [ [ 10 8] [0] ]
+    
+
+    // it's still unclear when we hit car 5 though, which has a speed of 10
+    // we ideally want to assign 5 to the 5 8 10 group because it's closer.
+    // if groups is a stack, then:
+
+    // when we went through 10 and 8 we formed a group, the 0 didnt get assigned to this group
+    // because it was incapable of catching up to 8. 
+
+    // the invariant is that since 8 catches up to 10 in time then 0 has to catch up to 8 in order to because
+    // part of the group
+
+    // spoiler: it doesn't. if 10 can catch up and 0 can't even catch up to a slower member then it
+    // constitute a new group
+
+
+    // groups = [ [10 8 ; incomplete ] [0] ]
+
+    // we then get to 5
+
+    // if 5 can catch up then it gets added to the pending stack's group
+    // if the speed is 10, then it certainly can be added.
+    
+    // ok, last element is 3; it is also incap
