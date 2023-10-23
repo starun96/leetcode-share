@@ -1,0 +1,8 @@
+fn cloneGraph(start_node, visited) -> node* {
+    let new_node = Node(val = start_node.val, neighbors = [])
+    for neighbor in start_node.neighbors:
+        if neighbor not in visited:
+            let new_neighbor_node = Node(val=neighbor.val, neighbors = [])
+            new_node.neighbors.push(new_neighbor_node)
+
+}
