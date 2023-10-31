@@ -1,7 +1,6 @@
 import queue
 from typing import List
 
-
 def breadth_first_search(row_idx: int, col_idx: int, grid: List[List[int]]) -> int:
     cells_to_visit = queue.Queue()
 
