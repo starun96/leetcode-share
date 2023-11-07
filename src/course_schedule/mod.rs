@@ -1,65 +1,95 @@
 use std::collections::{HashMap, HashSet, VecDeque};
 
-struct CourseGraph {
-    /// maps 'dependency' courses to the courses that follow
-    course_map: HashMap<i32, Vec<i32>>,
+type CourseGraph = HashMap<i32, Vec<i32>>;
 
-    /// all the unique courses
-    courses: HashSet<i32>,
+fn make_course_graph(prerequisites: Vec<Vec<i32>>) -> CourseGraph {
+    let mut courses = HashSet::new();
+    let mut course_map: HashMap<i32, Vec<i32>> = HashMap::new();
+    for p in prerequisites {
+        let (course, dependency) = (p[0], p[1]);
+
+        courses.insert(course);
+        if let Some(dependents) = course_map.get_mut(&dependency) {
+            dependents.push(course);
+        } else {
+            course_map.insert(dependency, vec![]);
+        }
+    }
+
+    course_map
 }
 
-impl CourseGraph {
-    pub fn make_course_graph(prerequisites: Vec<Vec<i32>>) -> Self {
-        let mut courses = HashSet::new();
-        let mut course_map: HashMap<i32, Vec<i32>> = HashMap::new();
-        for p in prerequisites {
-            let (course, dependency) = (p[0], p[1]);
+fn unique(g: &CourseGraph) -> usize {
+    g.len()
+}
 
-            courses.insert(course);
-            courses.insert(dependency);
+fn breadth_first_search(
+    g: &CourseGraph,
+    seen: &mut HashSet<i32>,
+    indegree: &mut HashMap<i32, i32>,
+) {
+    let mut queue = VecDeque::new();
+    queue.push_back(0);
+    while let Some(node) = queue.pop_front() {
+        if !seen.contains(&node) {
+            seen.insert(node);
+            for next_node in g.get(&node).unwrap() {
+                if let Some(slot) = indegree.get_mut(next_node) {
+                    *slot += 1;
+                } else {
+                    indegree.insert(*next_node, 1);
+                }
 
-            if let Some(dependents) = course_map.get_mut(&dependency) {
-                dependents.push(course);
-            } else {
-                course_map.insert(dependency, vec![]);
+                queue.push_back(*next_node);
             }
-        }
-
-        Self {
-            course_map,
-            courses,
         }
     }
 }
 
 pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
-    let course_graph = CourseGraph::make_course_graph(prerequisites);
-    let queue = VecDeque::new();
-    for i in bfs(course_graph) {
-        queue.push_front(all_dependents);
-        for dependent in all_dependents {
-            prereq_count[dependent] += 1
+    // this is an adjacency list representation
+    let course_graph = make_course_graph(prerequisites);
+
+    // essentially walking the graph with a BFS will result in a complete
+    // visitation of all nodes and their adjacent edges
+    // if multiple nodes lead into a singular node, then the BFS would
+    // 'double count' that destination node.
+    let mut prereq_count = HashMap::new();
+    let mut seen = HashSet::new();
+    for key in course_graph.keys() {
+        if !seen.contains(key) {
+            breadth_first_search(&course_graph, &mut seen, &mut prereq_count);
         }
     }
 
-    // start with the lowest prereqCount
-    // i.e. a node that looks like a starting point in this graph
-    // if you remove this starting node and rip out all of the edges
-    // that fan out from it, then you've accounted for satisfying
-    // that dependency
+    // basically sorting the graph by indegree yields 'starting points'
+    // these are nodes that only have edges fanning out from them (it's a DAG)
+    let mut map_values = prereq_count.clone().into_iter().collect::<Vec<_>>();
+    map_values.sort_by(|(_k, v), (_k2, v2)| v.cmp(v2));
 
-    // the way can track this is by decrementing the counts generated above
-    // by 1 each time we remove a 'source node'
+    // walking through this this map would then yield
+    // a traversal that tries to satisfy dependencies from the bottom up
+    // 'satisfying' a dependency means that if you removed its node from the graph
+    // and then counted all of its edges as no longer present, then you could
+    // say that that prerequisite was met
+    // if every edge is accounted for after walking every node in prerequisite order
+    // then it means that the graph fully resolves
+    // which means it's a valid, topologically sortable graph.
+    for (_ref_count, course_num) in map_values {
+        if let Some(neighbors) = course_graph.get(&course_num) {
+            for &neighbor in neighbors {
+                if let Some(num_edges_in) = prereq_count.get_mut(&neighbor) {
+                    if *num_edges_in == 0 {
+                        continue;
+                    }
 
-    // do this exhaustively from A source node and if this is a valid graph
-    // then you will end up in a situation where you end up with 1 final node
-    // that can then just be satisfied with no constraint
-
-    // that implies that the process of removing all of the sources recursively should result in all edges in the entire graph being accounted for fully and uniquely
-
-    for prereqCountpair in prereCounts.sort() {
-        let (course_num, prereq_count) = prereq_count_pair;
+                    *num_edges_in -= 1;
+                }
+            }
+        }
     }
+
+    prereq_count.into_values().all(|x| x == 0)
 }
 
 //  a node with 0 indegree is a source
